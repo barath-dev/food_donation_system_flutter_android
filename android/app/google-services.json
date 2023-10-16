@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "888230295873",
+    "project_id": "foodsarv-3e5d7",
+    "storage_bucket": "foodsarv-3e5d7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:888230295873:android:dbf5b01061c53bb2ee49c0",
+        "android_client_info": {
+          "package_name": "com.example.foodsarv01"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeLJzeV3M8fgmYoGr9wyeRgQ_eBIp-7Nc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
