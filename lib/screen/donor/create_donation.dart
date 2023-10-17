@@ -62,13 +62,46 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
     Future<TimeOfDay?> pickTime() =>
         showTimePicker(context: context, initialTime: TimeOfDay.now());
 
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          "Create Donation",
+          style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.1,
+              color: Colors.white),
+        ),
+        backgroundColor: Colors.black,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
+            const SizedBox(height: 30),
+            CircleAvatar(
+              backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+              backgroundImage: AssetImage('assets/images/pick.png'),
+              radius: 50,
+              // child: Container(
+              //   child: Text("Pick an Image"),
+              //   padding: EdgeInsets.only(left: 20),
+              // ),
+            ),
+            Text(
+              "Pick an Image",
+              style: TextStyle(color: Colors.black),
+            ),
+            const SizedBox(
+              height: 40,
+            ),
             TextInput(hint: 'Enter your name', controller: name),
-            TextInput(hint: 'Food type', controller: foodName),
+            const SizedBox(
+              height: 20,
+            ),
+            TextInput(hint: 'Food Name', controller: foodName),
+            const SizedBox(
+              height: 20,
+            ),
             Row(
               children: [
                 Spacer(),
@@ -98,14 +131,23 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                 Spacer()
               ],
             ),
+            const SizedBox(
+              height: 20,
+            ),
             TextInput(
                 hint: "Food Description",
                 maxlines: 3,
                 controller: foodDescription),
+            const SizedBox(
+              height: 20,
+            ),
             TextInput(
                 hint: 'Mobile Number',
                 keybordType: TextInputType.number,
                 controller: mobile),
+            const SizedBox(
+              height: 20,
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 14),
               child: Row(
@@ -136,6 +178,9 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                           "${selectedPickupDate.year}/${selectedPickupDate.month}/${selectedPickupDate.day}  ${selectedPickupDate.hour}:${selectedPickupDate.minute}")),
                 ],
               ),
+            ),
+            const SizedBox(
+              height: 20,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 14),
@@ -168,7 +213,13 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                 ],
               ),
             ),
+            const SizedBox(
+              height: 20,
+            ),
             TextInput(hint: 'Pick up location', controller: pickupLocation),
+            const SizedBox(
+              height: 20,
+            ),
             ElevatedButton(
               onPressed: () async {
                 String res = await uploadDonation();
@@ -182,9 +233,12 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
               },
               child: Text("Create Donation"),
             ),
+            const SizedBox(
+              height: 20,
+            )
           ],
         ),
       ),
-    ));
+    );
   }
 }

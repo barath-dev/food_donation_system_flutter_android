@@ -3,8 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:foodsarv01/firebase_options.dart';
 import 'package:foodsarv01/screen/auth/signup_screen.dart';
-import 'package:foodsarv01/screen/donor/create_donation.dart';
 import 'package:foodsarv01/screen/donor/view_donation.dart';
+import 'package:foodsarv01/utils/navbar.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 Future<void> main() async {
@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
             print(snapshot.hasData);
             if (snapshot.connectionState == ConnectionState.active) {
               if (snapshot.hasData) {
-                return const ViewDonation();
+                return NavBar();
               } else if (snapshot.hasError) {
                 return Center(child: Text("${snapshot.error}"));
               }
