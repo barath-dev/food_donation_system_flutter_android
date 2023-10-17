@@ -23,7 +23,9 @@ class Authmethods {
           "email": email,
           "password": password,
           "uid": cred.user!.uid,
-          "name": name
+          "name": name,
+          "donations": [],
+          "requests": [],
         });
         return res;
       } else {

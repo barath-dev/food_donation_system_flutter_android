@@ -1,6 +1,7 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:foodsarv01/resources/DBMethods.dart';
 import 'package:foodsarv01/widgets/textfiled.dart';
 
 List<String> list = <String>['Kg', 'Liter', 'Packet', 'Plate', 'Bottle'];
@@ -14,7 +15,7 @@ class CreateDonationScreen extends StatefulWidget {
 
 class _CreateDonationScreenState extends State<CreateDonationScreen> {
   TextEditingController name = TextEditingController();
-  TextEditingController foodType = TextEditingController();
+  TextEditingController foodName = TextEditingController();
   TextEditingController foodQuantity = TextEditingController();
   TextEditingController foodDescription = TextEditingController();
   TextEditingController mobile = TextEditingController();
@@ -28,6 +29,27 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
   String dropdownValue = list.first;
+
+  Future<String> uploadDonation() async {
+    DBMethods dbMethods = DBMethods();
+    if (name.text.isNotEmpty &&
+        foodName.text.isNotEmpty &&
+        foodQuantity.text.isNotEmpty &&
+        foodDescription.text.isNotEmpty &&
+        mobile.text.isNotEmpty &&
+        pickupLocation.text.isNotEmpty) {
+      String res = await dbMethods.addDonationToDB(
+          name: name.text,
+          foodName: foodName.text,
+          quantity: int.parse(foodQuantity.text),
+          unit: dropdownValue,
+          expiry_time: selectedExpiryDate,
+          pickup_time: selectedPickupDate,
+          mobile: mobile.text);
+      return res;
+    }
+    return "Please fill all the fields";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +68,7 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
         child: Column(
           children: [
             TextInput(hint: 'Enter your name', controller: name),
-            TextInput(hint: 'Food type', controller: foodType),
+            TextInput(hint: 'Food type', controller: foodName),
             Row(
               children: [
                 Spacer(),
@@ -148,7 +170,16 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
             ),
             TextInput(hint: 'Pick up location', controller: pickupLocation),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () async {
+                String res = await uploadDonation();
+                if (res == 'success') {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Donation created')));
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(uploadDonation().toString())));
+                }
+              },
               child: Text("Create Donation"),
             ),
           ],

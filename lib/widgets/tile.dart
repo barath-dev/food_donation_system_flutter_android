@@ -2,18 +2,21 @@
 
 import 'package:flutter/material.dart';
 
-Column tile() {
+Column tile({
+  required String title,
+  required String subtitle,
+}) {
   return Column(
     mainAxisSize: MainAxisSize.min,
     mainAxisAlignment: MainAxisAlignment.start,
     children: [
       Text(
-        'title',
-        style: TextStyle(color: Colors.grey[200]),
+        title,
+        style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0)),
         textAlign: TextAlign.left,
       ),
-      Text('subtitle',
-          style: TextStyle(color: Colors.grey[700]), textAlign: TextAlign.left),
+      Text(subtitle,
+          style: TextStyle(color: Colors.grey[600]), textAlign: TextAlign.left),
     ],
   );
 }
