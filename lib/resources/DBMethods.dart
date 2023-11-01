@@ -1,7 +1,6 @@
 // ignore_for_file: non_constant_identifier_names, avoid_print, file_names
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:foodsarv01/models/donation.dart';
 import 'package:uuid/uuid.dart';
 
@@ -10,28 +9,38 @@ class DBMethods {
       {required String name,
       required String foodName,
       required int quantity,
+      required String location,
+      required List requests,
+      required String url,
+      required String uid,
       required String unit,
       required DateTime expiry_time,
       required DateTime pickup_time,
-      required String mobile}) async {
+      required String mobile,
+      required String imgurl,
+      required String status}) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-    FirebaseAuth auth = FirebaseAuth.instance;
     String docId = const Uuid().v4();
     try {
       if (name.isNotEmpty &&
           foodName.isNotEmpty &&
           quantity != 0 &&
+          requests.isNotEmpty &&
           unit.isNotEmpty &&
-          mobile.isNotEmpty) {
+          mobile.isNotEmpty &&
+          imgurl.isNotEmpty) {
         await firestore.collection("donations").doc(docId).set({
           "name": name,
-          "uid": auth.currentUser!.uid,
+          "uid": uid,
           "foodName": foodName,
           "quantity": quantity,
           "unit": unit,
+          "requests": requests,
           "expiry_time": expiry_time,
           "pickup_time": pickup_time,
+          "location": location,
           "mobile": mobile,
+          "imgUrl": imgurl,
           "status": "pending",
         });
         return 'success';
@@ -56,6 +65,21 @@ class DBMethods {
       }
     } catch (e) {
       print(e.toString());
+    }
+  }
+
+  Future<String> setRequest({
+    required String docId,
+    required String requesterId,
+  }) async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    try {
+      await firestore.collection("donations").doc(docId).update({
+        "requests": FieldValue.arrayUnion([requesterId])
+      });
+      return "success";
+    } catch (e) {
+      return e.toString();
     }
   }
 }

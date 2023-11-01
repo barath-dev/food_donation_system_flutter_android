@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, avoid_print
 
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foodsarv01/models/donation.dart';
@@ -22,8 +21,10 @@ Widget Listtile({required DocumentSnapshot snap}) {
             borderRadius: BorderRadius.circular(10),
             color: Colors.blue,
           ),
-          child: Center(
-              child: Text('image here', style: TextStyle(color: Colors.white))),
+          child: Image.network(
+            donation.url,
+            fit: BoxFit.cover,
+          ),
         ),
         Expanded(
           flex: 1,
@@ -56,35 +57,6 @@ Widget Listtile({required DocumentSnapshot snap}) {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    // InkWell(
-                    //   onTap: () {
-                    //     print('call');
-                    //   },
-                    //   child: Container(
-                    //     decoration: BoxDecoration(
-                    //       borderRadius: BorderRadius.circular(10),
-                    //       color: Colors.green,
-                    //     ),
-                    //     child: Padding(
-                    //       padding: const EdgeInsets.symmetric(horizontal: 4),
-                    //       child: Column(
-                    //         mainAxisSize: MainAxisSize.min,
-                    //         mainAxisAlignment: MainAxisAlignment.start,
-                    //         children: [
-                    //           Text(
-                    //             'Location',
-                    //             style: TextStyle(
-                    //                 color: const Color.fromARGB(255, 0, 0, 0)),
-                    //             textAlign: TextAlign.left,
-                    //           ),
-                    //           Text('Kathmandu',
-                    //               style: TextStyle(color: const Color.fromARGB(255, 255, 255, 255)),
-                    //               textAlign: TextAlign.left),
-                    //         ],
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
                     tile(
                         title: "Expiry date",
                         subtitle:

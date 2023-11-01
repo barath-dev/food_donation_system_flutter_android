@@ -7,6 +7,8 @@ class Donation {
   final String uid;
   final String foodName;
   final int quantity;
+  final String location;
+  final String url;
   final String unit;
   final DateTime expiry_time;
   final DateTime pickup_time;
@@ -18,6 +20,8 @@ class Donation {
     required this.uid,
     required this.foodName,
     required this.quantity,
+    required this.url,
+    required this.location,
     required this.unit,
     required this.expiry_time,
     required this.pickup_time,
@@ -30,8 +34,10 @@ class Donation {
       name: data['name'],
       uid: data['uid'],
       foodName: data['foodName'],
+      location: data['location'],
       quantity: data['quantity'],
       unit: data['unit'],
+      url: data['imgUrl'],
       expiry_time: data['expiry_time'].toDate(),
       pickup_time: data['pickup_time'].toDate(),
       mobile: data['mobile'],

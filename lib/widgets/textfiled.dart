@@ -12,7 +12,7 @@ Widget TextInput(
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: SizedBox(
-      height: 56,
+      height: 60,
       width: width,
       child: TextField(
         controller: controller,

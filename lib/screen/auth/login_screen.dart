@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodsarv01/resources/Authmethods.dart';
 import 'package:foodsarv01/screen/auth/signup_screen.dart';
 import 'package:foodsarv01/screen/donor/create_donation.dart';
+import 'package:foodsarv01/screen/redirect_screen.dart';
 import 'package:foodsarv01/widgets/textfiled.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -24,10 +25,8 @@ class _LoginScreenState extends State<LoginScreen> {
           .showSnackBar(const SnackBar(content: Text('Login successfully')));
       const Duration(milliseconds: 500);
       // ignore: use_build_context_synchronously
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => const CreateDonationScreen()));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const RedirectScreen()));
     } else {
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(res)));

@@ -1,8 +1,15 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, use_build_context_synchronously
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_print, use_build_context_synchronously, unused_field
 
+import 'dart:typed_data';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodsarv01/resources/DBMethods.dart';
+import 'package:foodsarv01/resources/storage_methods.dart';
+import 'package:foodsarv01/screen/donor/view_donations.dart';
+import 'package:foodsarv01/utils/utils.dart';
 import 'package:foodsarv01/widgets/textfiled.dart';
+import 'package:image_picker/image_picker.dart';
 
 List<String> list = <String>['Kg', 'Liter', 'Packet', 'Plate', 'Bottle'];
 
@@ -30,6 +37,27 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
 
   String dropdownValue = list.first;
 
+  Uint8List? _file;
+  bool _filepicked = false;
+  String url = '';
+
+  Future<void> uploadImage() async {
+    print('uploading image');
+    StorageMethods storageMethods = StorageMethods();
+    url = await storageMethods.uploadImagetoStorage(_file!);
+    print('upload image success');
+    print(url);
+  }
+
+  void _selectImage() async {
+    Uint8List image = await PickImage(ImageSource.gallery);
+    _filepicked = true;
+    setState(() {
+      _file = image;
+      print('image selected');
+    });
+  }
+
   Future<String> uploadDonation() async {
     DBMethods dbMethods = DBMethods();
     if (name.text.isNotEmpty &&
@@ -41,11 +69,17 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
       String res = await dbMethods.addDonationToDB(
           name: name.text,
           foodName: foodName.text,
+          uid: FirebaseAuth.instance.currentUser!.uid,
+          imgurl: url,
+          requests:[],
+          location: pickupLocation.text,
+          status: 'pending',
           quantity: int.parse(foodQuantity.text),
           unit: dropdownValue,
           expiry_time: selectedExpiryDate,
           pickup_time: selectedPickupDate,
-          mobile: mobile.text);
+          mobile: mobile.text,
+          url: url);
       return res;
     }
     return "Please fill all the fields";
@@ -78,15 +112,33 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
         child: Column(
           children: [
             const SizedBox(height: 30),
-            CircleAvatar(
-              backgroundColor: const Color.fromARGB(0, 0, 0, 0),
-              backgroundImage: AssetImage('assets/images/pick.png'),
-              radius: 50,
-              // child: Container(
-              //   child: Text("Pick an Image"),
-              //   padding: EdgeInsets.only(left: 20),
-              // ),
-            ),
+            // ignore: unnecessary_null_comparison
+            !(_filepicked)
+                ? CircleAvatar(
+                    backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+                    backgroundImage: AssetImage('assets/images/pick.png'),
+                    radius: 50,
+                    // child: Container(
+                    //   child: Text("Pick an Image"),
+                    //   padding: EdgeInsets.only(left: 20),
+                    // ),
+                  )
+                : CircleAvatar(
+                    backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+                    backgroundImage: MemoryImage(_file!),
+                    radius: 50,
+                    // child: Container(
+                    //   child: Text("Pick an Image"),
+                    //   padding: EdgeInsets.only(left: 20),
+                    // ),
+                  ),
+
+            TextButton(
+                onPressed: () {
+                  print('tapped');
+                  _selectImage();
+                },
+                child: Text('Upload Image')),
             Text(
               "Pick an Image",
               style: TextStyle(color: Colors.black),
@@ -222,10 +274,20 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
             ),
             ElevatedButton(
               onPressed: () async {
+                await uploadImage();
                 String res = await uploadDonation();
+
+                print("tap");
                 if (res == 'success') {
                   ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Donation created')));
+                  Duration(milliseconds: 500);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ViewDonation(
+                                isMine: true,
+                              )));
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text(uploadDonation().toString())));

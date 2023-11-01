@@ -4,12 +4,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodsarv01/screen/donor/create_donation.dart';
 import 'package:foodsarv01/screen/donor/profile_screen.dart';
-import 'package:foodsarv01/screen/donor/view_donation.dart';
+import 'package:foodsarv01/screen/donor/view_donations.dart';
 
-List<Widget> pages = [CreateDonationScreen(), ViewDonation(), ProfileScreen()];
+List<Widget> pages_donate = [
+  CreateDonationScreen(),
+  ViewDonation(
+    isMine: true,
+  ),
+  ProfileScreen()
+];
+List<Widget> pages_recieve = [
+  ViewDonation(
+    isMine: false,
+  ),
+  ProfileScreen()
+];
 
 class NavBar extends StatefulWidget {
-  const NavBar({super.key});
+  final bool isDonate;
+  const NavBar({super.key, required this.isDonate});
 
   @override
   State<NavBar> createState() => _NavBarState();
@@ -46,7 +59,7 @@ class _NavBarState extends State<NavBar> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-        children: pages,
+        children: widget.isDonate ? pages_donate : pages_recieve,
         onPageChanged: onpageChanged,
         controller: _pageController,
       ),
@@ -55,15 +68,16 @@ class _NavBarState extends State<NavBar> {
         backgroundColor: Colors.black,
         items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.one_k),
-              backgroundColor:
-                  _pageIndex == 0 ? const Color.fromARGB(255, 139, 145, 149) : Colors.grey[500]),
+              icon: Icon(Icons.home_rounded),
+              backgroundColor: _pageIndex == 0
+                  ? const Color.fromARGB(255, 139, 145, 149)
+                  : Colors.grey[500]),
           BottomNavigationBarItem(
-              icon: Icon(Icons.two_k),
+              icon: Icon(Icons.rice_bowl_rounded),
               backgroundColor:
                   _pageIndex == 1 ? Colors.blue : Colors.grey[500]),
           BottomNavigationBarItem(
-              icon: Icon(Icons.three_k),
+              icon: Icon(Icons.person_2_rounded),
               backgroundColor:
                   _pageIndex == 2 ? Colors.blue : Colors.grey[500]),
         ],
