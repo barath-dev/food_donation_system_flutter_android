@@ -70,8 +70,8 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
           name: name.text,
           foodName: foodName.text,
           uid: FirebaseAuth.instance.currentUser!.uid,
-          imgurl: url,
-          requests:[],
+          imgurl: "r",
+          requests: [],
           location: pickupLocation.text,
           status: 'pending',
           quantity: int.parse(foodQuantity.text),
@@ -274,7 +274,7 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
             ),
             ElevatedButton(
               onPressed: () async {
-                await uploadImage();
+                // await uploadImage();
                 String res = await uploadDonation();
 
                 print("tap");
@@ -289,8 +289,8 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
                                 isMine: true,
                               )));
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(uploadDonation().toString())));
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(res.toString())));
                 }
               },
               child: Text("Create Donation"),

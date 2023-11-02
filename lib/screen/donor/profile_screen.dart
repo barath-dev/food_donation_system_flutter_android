@@ -1,3 +1,6 @@
+// ignore_for_file: prefer_interpolation_to_compose_strings
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodsarv01/screen/auth/login_screen.dart';
@@ -25,17 +28,57 @@ class _ProfileScreenState extends State<ProfileScreen> {
         appBar: AppBar(
           title: const Text('Profile'),
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('Profile Screen'),
-              ElevatedButton(
-                onPressed: signOut,
-                child: const Text('Sign Out'),
-              )
-            ],
-          ),
-        ));
+        body: StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection('users')
+                .doc(auth.currentUser!.uid)
+                .snapshots(),
+            builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+              if (snapshot.hasData) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        "name: " + snapshot.data!['name'],
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        snapshot.data!['email'],
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      // Text(
+                      //   snapshot.data!['mobile'],
+                      //   style: const TextStyle(
+                      //       fontSize: 20, fontWeight: FontWeight.bold),
+                      // ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      ElevatedButton(
+                          onPressed: () {
+                            signOut();
+                          },
+                          child: const Text('Sign Out'))
+                    ],
+                  ),
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            }));
   }
 }

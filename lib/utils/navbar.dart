@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:foodsarv01/screen/donor/create_donation.dart';
 import 'package:foodsarv01/screen/donor/profile_screen.dart';
 import 'package:foodsarv01/screen/donor/view_donations.dart';
+import 'package:foodsarv01/screen/reciever/my_requests.dart';
 
 List<Widget> pages_donate = [
   CreateDonationScreen(),
@@ -14,6 +15,7 @@ List<Widget> pages_donate = [
   ProfileScreen()
 ];
 List<Widget> pages_recieve = [
+  MyRequests(),
   ViewDonation(
     isMine: false,
   ),

@@ -25,7 +25,6 @@ class DBMethods {
       if (name.isNotEmpty &&
           foodName.isNotEmpty &&
           quantity != 0 &&
-          requests.isNotEmpty &&
           unit.isNotEmpty &&
           mobile.isNotEmpty &&
           imgurl.isNotEmpty) {
@@ -53,6 +52,7 @@ class DBMethods {
   }
 
   Future<void> updateUserInfoToDB() async {}
+
 
   Future<void> getDonations() async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
