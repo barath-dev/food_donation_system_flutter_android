@@ -70,7 +70,7 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
           name: name.text,
           foodName: foodName.text,
           uid: FirebaseAuth.instance.currentUser!.uid,
-          imgurl: "r",
+          imgurl: url,
           requests: [],
           location: pickupLocation.text,
           status: 'pending',
@@ -274,7 +274,7 @@ class _CreateDonationScreenState extends State<CreateDonationScreen> {
             ),
             ElevatedButton(
               onPressed: () async {
-                // await uploadImage();
+                await uploadImage();
                 String res = await uploadDonation();
 
                 print("tap");

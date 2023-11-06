@@ -42,6 +42,9 @@ class DBMethods {
           "imgUrl": imgurl,
           "status": "pending",
         });
+        FirebaseFirestore.instance.collection("users").doc(uid).set({
+          "requests": FieldValue.arrayUnion([docId])
+        });
         return 'success';
       } else {
         return "Please fill all the fields";
@@ -50,9 +53,8 @@ class DBMethods {
       return e.toString();
     }
   }
-
+  
   Future<void> updateUserInfoToDB() async {}
-
 
   Future<void> getDonations() async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;

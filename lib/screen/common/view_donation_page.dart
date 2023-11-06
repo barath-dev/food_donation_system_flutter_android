@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodsarv01/models/donation.dart';
 
@@ -107,9 +108,52 @@ class _ViewAcceptScreenState extends State<ViewAcceptScreen> {
                 children: [
                   const Spacer(),
                   ElevatedButton(
-                      onPressed: () {},
-                      child:  Text(
-                          widget.isMine ? "Delete Donation" : "Request")),
+                      onPressed: () {
+                        if (FirebaseAuth.instance.currentUser!.uid ==
+                            donation.uid) {
+                          FirebaseFirestore.instance
+                              .collection('donations')
+                              .doc(widget.snap.id)
+                              .update({
+                            'requests': FieldValue.arrayRemove(
+                                [FirebaseAuth.instance.currentUser!.uid])
+                          });
+                          Navigator.pop(context);
+                        } else {}
+                      },
+                      child: Text(
+                          FirebaseAuth.instance.currentUser!.uid == donation.uid
+                              ? "View Requests"
+                              : "")),
+                  ElevatedButton(
+                      onPressed: () {
+                        if (FirebaseAuth.instance.currentUser!.uid ==
+                            donation.uid) {
+                          FirebaseFirestore.instance
+                              .collection('donations')
+                              .doc(widget.snap.id)
+                              .delete();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Donation Deleted'),
+                            ),
+                          );
+                          Navigator.pop(context);
+                        } else {
+                          FirebaseFirestore.instance
+                              .collection('donations')
+                              .doc(widget.snap.id)
+                              .update({
+                            'requests': FieldValue.arrayUnion(
+                                [FirebaseAuth.instance.currentUser!.uid])
+                          });
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: Text(
+                          FirebaseAuth.instance.currentUser!.uid == donation.uid
+                              ? "Delete Donation"
+                              : "Request")),
                   const Spacer(),
                 ],
               ),
