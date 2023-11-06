@@ -4,7 +4,7 @@ import 'package:foodsarv01/models/donation.dart';
 
 
 class RequestsScreen extends StatefulWidget {
-  const RequestsScreen({super.key, required this.});
+  const RequestsScreen({super.key});
 
   @override
   State<RequestsScreen> createState() => _RequestsScreenState();
