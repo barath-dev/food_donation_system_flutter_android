@@ -8,6 +8,7 @@ class Donation {
   final String foodName;
   final int quantity;
   final String location;
+  final String rid;
   final String url;
   final String unit;
   final DateTime expiry_time;
@@ -17,6 +18,7 @@ class Donation {
 
   Donation({
     required this.name,
+    required this.rid,
     required this.uid,
     required this.foodName,
     required this.quantity,
@@ -32,6 +34,7 @@ class Donation {
   factory Donation.fromMap(DocumentSnapshot data) {
     return Donation(
       name: data['name'],
+      rid: data['rid'],
       uid: data['uid'],
       foodName: data['foodName'],
       location: data['location'],

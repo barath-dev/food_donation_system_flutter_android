@@ -17,7 +17,7 @@ Future<void> main() async {
   await FirebaseAppCheck.instance.activate(
     androidProvider: AndroidProvider.debug,
   );
-  
+
   runApp(const MyApp());
 }
 
@@ -43,10 +43,12 @@ class MyApp extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {
               if (snapshot.hasData) {
+                print('user is logged in');
                 return const RedirectScreen();
               } else if (snapshot.hasError) {
                 return Center(child: Text("${snapshot.error}"));
               }
+              return const SignUpScreen();
             }
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(

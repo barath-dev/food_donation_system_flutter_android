@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:foodsarv01/models/donation.dart';
+import 'package:foodsarv01/screen/donor/view_requests.dart';
 
 class ViewAcceptScreen extends StatefulWidget {
   final DocumentSnapshot snap;
@@ -111,14 +113,12 @@ class _ViewAcceptScreenState extends State<ViewAcceptScreen> {
                       onPressed: () {
                         if (FirebaseAuth.instance.currentUser!.uid ==
                             donation.uid) {
-                          FirebaseFirestore.instance
-                              .collection('donations')
-                              .doc(widget.snap.id)
-                              .update({
-                            'requests': FieldValue.arrayRemove(
-                                [FirebaseAuth.instance.currentUser!.uid])
-                          });
-                          Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ViewRequests(
+                                        donation: donation,
+                                      )));
                         } else {}
                       },
                       child: Text(
@@ -147,6 +147,17 @@ class _ViewAcceptScreenState extends State<ViewAcceptScreen> {
                             'requests': FieldValue.arrayUnion(
                                 [FirebaseAuth.instance.currentUser!.uid])
                           });
+                          FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(FirebaseAuth.instance.currentUser!.uid)
+                              .update({
+                            'requests': FieldValue.arrayUnion([widget.snap.id])
+                          });
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Request Sent'),
+                            ),
+                          );
                           Navigator.pop(context);
                         }
                       },

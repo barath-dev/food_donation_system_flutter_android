@@ -2,23 +2,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foodsarv01/models/donation.dart';
 
-import '../common/view_donation_page.dart';
-
-
-class RequestsScreen extends StatefulWidget {
-  const RequestsScreen({super.key});
+class ViewRequests extends StatefulWidget {
+  final Donation donation;
+  const ViewRequests({super.key, required this.donation});
 
   @override
-  State<RequestsScreen> createState() => _RequestsScreenState();
+  State<ViewRequests> createState() => _ViewRequestsState();
 }
 
-class _RequestsScreenState extends State<RequestsScreen> {
+class _ViewRequestsState extends State<ViewRequests> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection("donations").snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection("donations")
+            .where('rid', isEqualTo: widget.donation.rid)
+            .snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasData) {
             return ListView.builder(
@@ -30,17 +30,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: Card(
                     child: ListTile(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ViewAcceptScreen(
-                              snap: snap,
-                              isMine: false,
-                            ),
-                          ),
-                        );
-                      },
+                      onTap: () {},
                       title: Text(donation.foodName),
                       subtitle: Text(donation.name),
                       leading: CircleAvatar(

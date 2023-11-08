@@ -38,12 +38,13 @@ class DBMethods {
           "expiry_time": expiry_time,
           "pickup_time": pickup_time,
           "location": location,
+          'rid': docId,
           "mobile": mobile,
           "imgUrl": imgurl,
           "status": "pending",
         });
-        FirebaseFirestore.instance.collection("users").doc(uid).set({
-          "requests": FieldValue.arrayUnion([docId])
+        FirebaseFirestore.instance.collection("users").doc(uid).update({
+          "donations": FieldValue.arrayUnion([docId])
         });
         return 'success';
       } else {
@@ -53,7 +54,7 @@ class DBMethods {
       return e.toString();
     }
   }
-  
+
   Future<void> updateUserInfoToDB() async {}
 
   Future<void> getDonations() async {
