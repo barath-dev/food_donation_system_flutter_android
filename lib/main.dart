@@ -8,6 +8,8 @@ import 'package:foodsarv01/firebase_options.dart';
 import 'package:foodsarv01/screen/auth/signup_screen.dart';
 import 'package:foodsarv01/screen/donor/view_donations.dart';
 import 'package:foodsarv01/screen/redirect_screen.dart';
+import 'package:foodsarv01/screen/transport/list_screen.dart';
+import 'package:foodsarv01/screen/transport/transport_status.dart';
 import 'package:foodsarv01/utils/navbar.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -43,8 +45,12 @@ class MyApp extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {
               if (snapshot.hasData) {
-                print('user is logged in');
-                return const RedirectScreen();
+                if (FirebaseAuth.instance.currentUser!.uid ==
+                    'YZE7zUyAh0gEcSmvhB55mUqEA9y1') {
+                  return const TranspoerStatus();
+                } else {
+                  return const RedirectScreen();
+                }
               } else if (snapshot.hasError) {
                 return Center(child: Text("${snapshot.error}"));
               }

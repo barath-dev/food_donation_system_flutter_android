@@ -39,6 +39,7 @@ class DBMethods {
           "pickup_time": pickup_time,
           "location": location,
           'rid': docId,
+          'recieverID': '',
           "mobile": mobile,
           "imgUrl": imgurl,
           "status": "pending",

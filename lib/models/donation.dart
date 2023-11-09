@@ -8,8 +8,10 @@ class Donation {
   final String foodName;
   final int quantity;
   final String location;
+  final String recieverID;
   final String rid;
   final String url;
+  final List<dynamic> requests;
   final String unit;
   final DateTime expiry_time;
   final DateTime pickup_time;
@@ -21,7 +23,9 @@ class Donation {
     required this.rid,
     required this.uid,
     required this.foodName,
+    required this.requests,
     required this.quantity,
+    required this.recieverID,
     required this.url,
     required this.location,
     required this.unit,
@@ -36,6 +40,8 @@ class Donation {
       name: data['name'],
       rid: data['rid'],
       uid: data['uid'],
+      recieverID: data['recieverID'],
+      requests: data['requests'],
       foodName: data['foodName'],
       location: data['location'],
       quantity: data['quantity'],

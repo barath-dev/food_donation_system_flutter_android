@@ -1,6 +1,7 @@
+// ignore_for_file: prefer_interpolation_to_compose_strings
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:foodsarv01/models/donation.dart';
 import 'package:foodsarv01/screen/donor/view_requests.dart';
@@ -15,6 +16,86 @@ class ViewAcceptScreen extends StatefulWidget {
 }
 
 class _ViewAcceptScreenState extends State<ViewAcceptScreen> {
+  TextEditingController phone = TextEditingController();
+  TextEditingController location = TextEditingController();
+
+  @override
+  void initState() {
+    print(FirebaseAuth.instance.currentUser!.uid == widget.snap['uid']);
+    super.initState();
+  }
+
+  _getData() async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return SimpleDialog(
+            title: const Text('Enter your details'),
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: TextFormField(
+                  controller: phone,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Phone',
+                  ),
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: TextFormField(
+                  controller: location,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Location',
+                  ),
+                ),
+              ),
+              Row(
+                children: [
+                  const Spacer(),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Cancel')),
+                  ElevatedButton(
+                      onPressed: () async {
+                        if (phone.text.isNotEmpty && location.text.isNotEmpty) {
+                          FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(FirebaseAuth.instance.currentUser!.uid)
+                              .update({
+                            'status': 'accepted',
+                            'phone': phone.text,
+                            'location': location.text
+                          });
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Details Updated and Request Sent'),
+                            ),
+                          );
+                          Navigator.pop(context);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Please fill all the details'),
+                            ),
+                          );
+                        }
+                      },
+                      child: const Text('Confirm')),
+                  const Spacer(),
+                ],
+              )
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     Donation donation = Donation.fromMap(widget.snap);
@@ -126,7 +207,8 @@ class _ViewAcceptScreenState extends State<ViewAcceptScreen> {
                               ? "View Requests"
                               : "")),
                   ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        _getData();
                         if (FirebaseAuth.instance.currentUser!.uid ==
                             donation.uid) {
                           FirebaseFirestore.instance
@@ -140,6 +222,7 @@ class _ViewAcceptScreenState extends State<ViewAcceptScreen> {
                           );
                           Navigator.pop(context);
                         } else {
+                          _getData();
                           FirebaseFirestore.instance
                               .collection('donations')
                               .doc(widget.snap.id)
